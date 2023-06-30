@@ -69,6 +69,10 @@ export class SamlService {
 
 	async init(): Promise<void> {
 		await this.loadFromDbAndApplySamlPreferences();
+		this.setSchemaValidator();
+	}
+
+	setSchemaValidator() {
 		setSchemaValidator({
 			validate: async (response: string) => {
 				const valid = await validateResponse(response);
@@ -223,6 +227,7 @@ export class SamlService {
 		setSamlLoginLabel(prefs.loginLabel ?? getSamlLoginLabel());
 		this.getIdentityProviderInstance(true);
 		const result = await this.saveSamlPreferencesToDb();
+		this.setSchemaValidator();
 		return result;
 	}
 
